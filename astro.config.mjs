@@ -9,7 +9,7 @@ export default defineConfig({
       title: 'Colmena',
       description: 'Deterministic governance for multi-agent Claude Code',
       logo: {
-        src: '/public/logo.svg',
+        src: './src/assets/logo.svg',
       },
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/4rth4S/colmena' },
