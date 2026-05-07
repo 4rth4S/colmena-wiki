@@ -61,16 +61,16 @@ No databases, no servers. All state is on disk:
 | File | Purpose |
 |------|---------|
 | `runtime-delegations.json` | Live role/human delegations |
-| `elo-overrides.json` | Calibration-produced agent-scoped rule overrides |
+| `runtime-agent-overrides.json` | Calibration-produced agent-scoped rule overrides |
 | `alerts.json` | Append-only alert list |
 | `audit.log` | Every firewall decision (append, 10MB rotation) |
-| `elo-events.jsonl` | Every ELO delta (append-only) |
+| `elo/events.jsonl` | Every ELO delta (append-only) |
 | `reviews/pending/*.json` | Auditor review lifecycle |
 | `findings/<mission>/*.json` | Findings from reviews (5000 hard cap) |
 
 ## Key design principles
 
-- **Under 15ms** hook latency -- Rust, pre-compiled regexes, no network calls
+- **Under 100ms** PreToolUse latency budget -- Rust, pre-compiled regexes, no network calls
 - **Safe fallback** -- any hook failure returns `ask`, never `deny` or crash
 - **Files over databases** -- YAML config, JSON queue, JSONL logs, git-versionable
 - **Human authority wins** -- YAML overrides always beat ELO

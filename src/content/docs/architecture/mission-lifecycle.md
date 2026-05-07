@@ -50,12 +50,10 @@ Each role gets `~/.claude/agents/<role_id>.md` with:
 
 ```yaml
 ---
-name: <role_id>
+name: <mission_id>__<role>-<instance>
+description: "<role description from library>"
 colmena_auto_generated: true
-tools:
-  - Read
-  - Write
-  - mcp__colmena__review_submit
+tools: Read, Write, Edit, Glob, Grep, Bash, WebFetch, WebSearch, mcp__colmena__review_submit, mcp__colmena__review_evaluate
 ---
 ```
 
