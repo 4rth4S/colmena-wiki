@@ -10,14 +10,14 @@ Colmena is open source and welcomes contributions. This page covers the developm
 ## Development setup
 
 <Steps>
-1. **Clone the repository**
+**Clone the repository**
 
 ```bash
 git clone git@github.com:4rth4S/colmena.git
 cd colmena
 ```
 
-2. **Build**
+**Build**
 
 ```bash
 cargo build --workspace --release
@@ -25,7 +25,7 @@ cargo build --workspace --release
 
 Target binaries: `target/release/colmena` (CLI) and `target/release/colmena-mcp` (MCP server).
 
-3. **Run tests**
+**Run tests**
 
 ```bash
 cargo test --workspace
@@ -37,7 +37,7 @@ Test a single crate:
 cargo test -p colmena-core
 ```
 
-4. **Lint**
+**Lint**
 
 ```bash
 cargo clippy --workspace -- -D warnings
@@ -45,7 +45,7 @@ cargo clippy --workspace -- -D warnings
 
 CI enforces `-D` since PR #25. Run clippy before every PR.
 
-5. **Format**
+**Format**
 
 ```bash
 cargo fmt --all --check

@@ -44,15 +44,15 @@ See the [Install Mode B](/quickstart/install-mode-b) page for the full walkthrou
 ## What `colmena setup` does
 
 <Steps>
-1. **Detects mode.** Repo mode if a Cargo workspace is nearby (config at `<project>/config/`), otherwise standalone (`~/.colmena/config/`).
-2. **Creates config directories.** `library/roles`, `library/patterns`, `library/prompts`, `queue/pending`, `queue/decided`.
-3. **Writes default config.** All defaults embedded in the binary -- no downloads needed.
-4. **Registers hooks** in `~/.claude/settings.json`:
+**Detects mode.** Repo mode if a Cargo workspace is nearby (config at `<project>/config/`), otherwise standalone (`~/.colmena/config/`).
+**Creates config directories.** `library/roles`, `library/patterns`, `library/prompts`, `queue/pending`, `queue/decided`.
+**Writes default config.** All defaults embedded in the binary -- no downloads needed.
+**Registers hooks** in `~/.claude/settings.json`:
    - `PreToolUse` -- evaluates every tool call against the firewall
    - `PostToolUse` -- filters noisy Bash output before Claude sees it
    - `PermissionRequest` -- auto-approves tools within a role's scope
    - `SubagentStop` -- blocks agents from stopping without submitting for auditor review
-5. **Registers MCP** in `~/.mcp.json` so Claude Code sees the Colmena tools natively.
+**Registers MCP** in `~/.mcp.json` so Claude Code sees the Colmena tools natively.
 </Steps>
 
 ## Verify the install

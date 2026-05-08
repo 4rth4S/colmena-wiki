@@ -18,7 +18,7 @@ If you prefer to run each command yourself, use [Mode A](/quickstart/getting-sta
 ## Step by step
 
 <Steps>
-1. **Clone and open**
+**Clone and open**
 
 ```bash
 git clone git@github.com:4rth4S/colmena.git
@@ -27,7 +27,7 @@ cd colmena
 
 Open the directory in Claude Code. CC autoloads `CLAUDE.md` at startup.
 
-2. **Ask CC to set Colmena up**
+**Ask CC to set Colmena up**
 
 Prompt your Claude Code:
 
@@ -40,7 +40,7 @@ CC will:
 - Verify with `colmena doctor`
 - Summarize the default trust rules
 
-3. **Start your first mission**
+**Start your first mission**
 
 Once installed, CC can use Colmena tools natively:
 
