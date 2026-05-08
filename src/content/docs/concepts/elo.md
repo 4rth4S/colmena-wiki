@@ -3,7 +3,7 @@ title: ELO & Accountability
 description: How agents earn trust through auditor review
 ---
 
-import { Steps, Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid } from '@astrojs/starlight/components';
 
 ELO is Colmena's trust calibration system. Agents earn trust through auditor review, and that trust determines what they can do autonomously.
 
@@ -63,14 +63,13 @@ Human authority is always above ELO. If you write a rule that says "developer is
 
 ## The accountability cycle
 
-<Steps>
 1. **Mission spawns** -- agents get scoped permissions based on current trust
 2. **Agents work** -- tool calls are evaluated by the firewall
 3. **Review submitted** -- auditor evaluates with QPC framework
 4. **ELO updates** -- scores feed into per-role ELO with temporal decay
 5. **Trust adjusts** -- calibration maps ELO to new trust tier
 6. **Next mission** -- agents operate at updated trust level
-</Steps>
+
 
 ## Related
 

@@ -3,7 +3,7 @@ title: Getting Started
 description: Zero to a working trust firewall in 5 minutes
 ---
 
-import { Tabs, TabItem, Steps, Card, CardGrid } from '@astrojs/starlight/components';
+import { Tabs, TabItem, Card, CardGrid } from '@astrojs/starlight/components';
 
 Zero to a working trust firewall in 5 minutes, then your first multi-agent mission.
 
@@ -43,7 +43,6 @@ See the [Install Mode B](/quickstart/install-mode-b) page for the full walkthrou
 
 ## What `colmena setup` does
 
-<Steps>
 1. **Detects mode.** Repo mode if a Cargo workspace is nearby (config at `<project>/config/`), otherwise standalone (`~/.colmena/config/`).
 2. **Creates config directories.** `library/roles`, `library/patterns`, `library/prompts`, `queue/pending`, `queue/decided`.
 3. **Writes default config.** All defaults embedded in the binary -- no downloads needed.
@@ -53,7 +52,7 @@ See the [Install Mode B](/quickstart/install-mode-b) page for the full walkthrou
    - `PermissionRequest` -- auto-approves tools within a role's scope
    - `SubagentStop` -- blocks agents from stopping without submitting for auditor review
 5. **Registers MCP** in `~/.mcp.json` so Claude Code sees the Colmena tools natively.
-</Steps>
+
 
 ## Verify the install
 

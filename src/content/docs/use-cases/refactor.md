@@ -3,11 +3,7 @@ title: Refactor Mission
 description: Cross-crate refactoring with iterative review cycles
 ---
 
-import { Steps, Card, CardGrid } from '@astrojs/starlight/components';
-
-**Persona.** Developer or tech lead. A Rust workspace with 4 crates needs a refactor that touches all crates. One agent cannot track cross-crate side effects.
-
-**Pattern.** `colmena-self-dev` -- iterative topology with multiple developers, a code reviewer, and an architect.
+import { Card, CardGrid } from '@astrojs/starlight/components';
 
 ## The problem
 
@@ -57,12 +53,11 @@ colmena mission spawn --from colmena-refactor.mission.yaml
 
 ## Iterative workflow
 
-<Steps>
 1. **Iteration 1.** core agent refactors the review subsystem. CLI agent updates the CLI. Both submit for review.
 2. **Review gate.** code_reviewer reads both diffs, checks for cross-crate dependency leaks, files findings.
 3. **Architect decision.** If both pass review, the iteration closes. If either fails, agents get findings and start iteration 2.
 4. **Auditor.** After the final iteration, the auditor scores the full cycle with QPC.
-</Steps>
+
 
 ## Key features
 

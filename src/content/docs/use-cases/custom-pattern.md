@@ -3,9 +3,7 @@ title: Custom Pattern
 description: Creating and using custom orchestration patterns
 ---
 
-import { Tabs, TabItem, Steps, Card, CardGrid } from '@astrojs/starlight/components';
-
-**Persona.** Advanced user. The built-in patterns don't fit your workflow. You need a custom topology with specialized roles.
+import { Tabs, TabItem, Card, CardGrid } from '@astrojs/starlight/components';
 
 ## When to create a custom pattern
 

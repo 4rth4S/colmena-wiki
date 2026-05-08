@@ -3,7 +3,7 @@ title: Roadmap
 description: Past and planned milestones for Colmena development
 ---
 
-import { Steps, Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid } from '@astrojs/starlight/components';
 
 Colmena is developed in numbered milestones. Each milestone ships a coherent set of features.
 

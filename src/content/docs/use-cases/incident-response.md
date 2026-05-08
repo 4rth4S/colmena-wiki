@@ -3,11 +3,7 @@ title: Incident Response
 description: On-call SRE investigation with scoped read-only agents
 ---
 
-import { Steps, Card, CardGrid } from '@astrojs/starlight/components';
-
-**Persona.** On-call SRE at 3 AM. Production latency spiked. You need an agent to investigate -- check pods, scrape metrics, tail logs -- without exposing credentials or allowing any destructive operation.
-
-**Pattern.** `plan-then-execute` -- hierarchical topology with a coordinator and two workers.
+import { Card, CardGrid } from '@astrojs/starlight/components';
 
 ## The problem
 
