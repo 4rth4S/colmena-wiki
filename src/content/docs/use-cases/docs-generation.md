@@ -59,12 +59,14 @@ colmena mission spawn --from docs-gen-colmena.mission.yaml
 ## Agent assignments
 
 <Steps>
+
 1. **Three writers work in parallel** -- each writes their assigned section
    - Writer 1: Quickstart (3 pages) + Concepts (4 pages) + Index
    - Writer 2: Use Cases (6 pages with manifest YAML)
    - Writer 3: Reference (5 pages) + Architecture (3 pages) + Community (3 pages)
 2. **Architect reviews** all pages for architectural accuracy, cross-reference correctness, manifest YAML validity
 3. **Auditor evaluates** with QPC framework -- scores all pages
+
 </Steps>
 
 ## Design requirements

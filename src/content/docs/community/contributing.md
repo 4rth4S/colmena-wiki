@@ -10,6 +10,7 @@ Colmena is open source and welcomes contributions. This page covers the developm
 ## Development setup
 
 <Steps>
+
 1. **Clone the repository**
 
 ```bash
@@ -52,6 +53,7 @@ cargo fmt --all --check
 ```
 
 CI-enforced. Run before every PR.
+
 
 </Steps>
 

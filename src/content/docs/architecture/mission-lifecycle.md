@@ -16,6 +16,7 @@ ELO update → calibrate run → mission deactivate
 ```
 
 <Steps>
+
 1. **Manifest validation.** `MissionManifest::from_path` validates id, pattern, TTL, roles, and ownership.
 2. **Border case check.** If `enforce_missions: false` is explicit and there are 3+ roles, the spawn aborts with options. The operator wins.
 3. **Spawn.** `spawn_mission()` resolves the pattern, maps roles to slots, composes prompts, writes subagent files, and creates delegations.
@@ -27,6 +28,7 @@ ELO update → calibrate run → mission deactivate
 9. **ELO update.** Scores feed per-role ELO with temporal decay. Findings stored.
 10. **Calibration.** `colmena calibrate run` maps ELO to trust tiers.
 11. **Deactivation.** `colmena mission deactivate` revokes all delegations, marks agents as revoked.
+
 </Steps>
 
 ## spawn_mission() internals

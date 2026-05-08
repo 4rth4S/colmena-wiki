@@ -18,6 +18,7 @@ If you prefer to run each command yourself, use [Mode A](/quickstart/getting-sta
 ## Step by step
 
 <Steps>
+
 1. **Clone and open**
 
 ```bash
@@ -45,6 +46,7 @@ CC will:
 Once installed, CC can use Colmena tools natively:
 
 > Use mission_suggest to see if this repo needs Colmena for a small doc task. If yes, use mission_spawn to create the squad.
+
 
 </Steps>
 
