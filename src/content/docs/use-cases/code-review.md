@@ -53,10 +53,10 @@ colmena mission spawn --from code-review-auth.mission.yaml
 ## The review cycle
 
 <Steps>
-**Developer** reads the auth module, writes tests, fixes error handling, and submits for review
-**Code reviewer** reads the diff, checks for logic errors and test coverage gaps, files findings
-**Auditor** evaluates both with QPC: Quality, Precision, Comprehensiveness
-Scores feed ELO. If scores are low, alerts fire and the developer's trust adjusts
+1. **Developer** reads the auth module, writes tests, fixes error handling, and submits for review
+2. **Code reviewer** reads the diff, checks for logic errors and test coverage gaps, files findings
+3. **Auditor** evaluates both with QPC: Quality, Precision, Comprehensiveness
+4. Scores feed ELO. If scores are low, alerts fire and the developer's trust adjusts
 </Steps>
 
 ## Key benefits

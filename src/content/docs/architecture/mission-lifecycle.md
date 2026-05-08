@@ -16,17 +16,17 @@ ELO update → calibrate run → mission deactivate
 ```
 
 <Steps>
-**Manifest validation.** `MissionManifest::from_path` validates id, pattern, TTL, roles, and ownership.
-**Border case check.** If `enforce_missions: false` is explicit and there are 3+ roles, the spawn aborts with options. The operator wins.
-**Spawn.** `spawn_mission()` resolves the pattern, maps roles to slots, composes prompts, writes subagent files, and creates delegations.
-**Mission Gate.** Computed from config: explicit true/false honored, auto-activates when role delegations exist.
-**Agent execution.** Agents work. Every tool call goes through PreToolUse with mission scope.
-**Review submission.** Worker calls review_submit. Artifact hash-verified, reviewer assigned.
-**SubagentStop.** Worker blocked from stopping until review submitted. Reviewer blocked until evaluation submitted.
-**Evaluation.** Auditor calls review_evaluate with QPC scores.
-**ELO update.** Scores feed per-role ELO with temporal decay. Findings stored.
-**Calibration.** `colmena calibrate run` maps ELO to trust tiers.
-**Deactivation.** `colmena mission deactivate` revokes all delegations, marks agents as revoked.
+1. **Manifest validation.** `MissionManifest::from_path` validates id, pattern, TTL, roles, and ownership.
+2. **Border case check.** If `enforce_missions: false` is explicit and there are 3+ roles, the spawn aborts with options. The operator wins.
+3. **Spawn.** `spawn_mission()` resolves the pattern, maps roles to slots, composes prompts, writes subagent files, and creates delegations.
+4. **Mission Gate.** Computed from config: explicit true/false honored, auto-activates when role delegations exist.
+5. **Agent execution.** Agents work. Every tool call goes through PreToolUse with mission scope.
+6. **Review submission.** Worker calls review_submit. Artifact hash-verified, reviewer assigned.
+7. **SubagentStop.** Worker blocked from stopping until review submitted. Reviewer blocked until evaluation submitted.
+8. **Evaluation.** Auditor calls review_evaluate with QPC scores.
+9. **ELO update.** Scores feed per-role ELO with temporal decay. Findings stored.
+10. **Calibration.** `colmena calibrate run` maps ELO to trust tiers.
+11. **Deactivation.** `colmena mission deactivate` revokes all delegations, marks agents as revoked.
 </Steps>
 
 ## spawn_mission() internals
