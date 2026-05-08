@@ -37,16 +37,16 @@ colmena-mcp ──┘          ^
 ## The five CC integration points
 
 <CardGrid stagger>
-  <Card title="PreToolUse" icon="activity">
+  <Card title="PreToolUse" icon="analytics">
     Reactive. Before every tool call. Evaluates against firewall rules, delegations, ELO, and mission gate. Completes in under 100ms.
   </Card>
-  <Card title="PostToolUse" icon="filter">
+  <Card title="PostToolUse" icon="magnifier">
     Reactive. After Bash completes. Runs filter pipeline: ANSI strip, stderr-only, dedup, truncate. Saves 30-50% tokens.
   </Card>
-  <Card title="PermissionRequest" icon="check-circle">
+  <Card title="PermissionRequest" icon="approve-check-circle">
     Reactive. When CC would prompt. Auto-approves role-scoped tools via CC session rules. Only for source:"role" delegations.
   </Card>
-  <Card title="SubagentStop" icon="stop-circle">
+  <Card title="SubagentStop" icon="error">
     Reactive. When a subagent finishes. Blocks mission workers without review_submit. Reviewer gate blocks without review_evaluate.
   </Card>
   <Card title="MCP Server" icon="server">

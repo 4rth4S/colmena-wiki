@@ -59,13 +59,13 @@ colmena mission spawn --from incident-latency.mission.yaml
 ## What the firewall enforces
 
 <CardGrid stagger>
-  <Card title="Auto-approved" icon="check-circle">
+  <Card title="Auto-approved" icon="approve-check-circle">
     <code>kubectl get pods -n prod</code><br/>
     <code>kubectl logs checkout-api-xyz --tail=200</code><br/>
     <code>curl -s https://grafana.internal/api/v1/query</code><br/>
     <code>journalctl -u kubelet --since "1 hour ago"</code>
   </Card>
-  <Card title="Blocked" icon="x-circle">
+  <Card title="Blocked" icon="close">
     <code>kubectl delete deployment checkout-api</code><br/>
     Any read of <code>*.env</code>, <code>*credentials*</code>, <code>*.key</code><br/>
     <code>sudo</code> commands<br/>

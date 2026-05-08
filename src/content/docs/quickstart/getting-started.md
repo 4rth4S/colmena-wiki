@@ -77,7 +77,7 @@ Open Claude Code in any project. The firewall is live from the first tool call.
   <Card title="Destructive op" icon="warning">
     <code>rm -rf target/</code> -- the firewall asks: "Potentially destructive system command. Allow?"
   </Card>
-  <Card title="Force push" icon="lock">
+  <Card title="Force push" icon="padlock">
     <code>git push --force origin main</code> -- blocked outright. No prompt, no override.
   </Card>
 </CardGrid>

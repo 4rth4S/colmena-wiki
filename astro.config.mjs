@@ -16,6 +16,7 @@ export default defineConfig({
         { icon: 'github', label: 'GitHub', href: 'https://github.com/4rth4S/colmena' },
       ],
       customCss: ['/src/styles/custom.css'],
+      tableOfContents: { overview: false },
       sidebar: [
         {
           label: 'Quickstart',

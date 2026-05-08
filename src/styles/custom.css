@@ -1,5 +1,7 @@
 /* Colmena design system — matches colmena.space identity */
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+
 :root {
   --sl-font: 'Inter', -apple-system, sans-serif;
 
@@ -81,12 +83,53 @@ a:hover {
   color: #fbbf24;
 }
 
+/* Bold text — ensure it renders visibly */
+strong {
+  font-weight: 700;
+  color: #f0f4f8;
+}
+
 /* Sidebar active item — black text on amber, always readable */
 [aria-current='page'],
 [aria-current='page']:hover,
 [aria-current='page']:focus {
   color: #0a0a0f !important;
   background-color: #f59e0b !important;
+}
+
+/* ── Hero buttons ────────────────────────────── */
+/* Primary: black text on amber, always readable */
+.sl-hero .sl-link-button.primary {
+  color: #0a0a0f;
+  background: #f59e0b;
+  border-color: #f59e0b;
+}
+.sl-hero .sl-link-button.primary:hover {
+  background: #fbbf24;
+  border-color: #fbbf24;
+}
+
+/* Secondary: page-bg + amber border, amber text */
+.sl-hero .sl-link-button.secondary {
+  color: #f59e0b;
+  background: transparent;
+  border-color: #1e293b;
+}
+.sl-hero .sl-link-button.secondary:hover {
+  border-color: #f59e0b;
+  background: #f59e0b;
+  color: #0a0a0f;
+}
+
+/* Minimal: subtle, no border, amber text */
+.sl-hero .sl-link-button.minimal {
+  color: #94a3b8;
+  background: transparent;
+  border-color: transparent;
+}
+.sl-hero .sl-link-button.minimal:hover {
+  color: #f59e0b;
+  background: transparent;
 }
 
 /* Cards — matching colmena.space */
@@ -107,4 +150,47 @@ starlight-tabs {
 .starlight-aside {
   border-radius: var(--sl-radius);
   border: 1px solid var(--sl-color-hairline);
+}
+
+/* ── Bottom CTA row (splash page) ──────────── */
+.splash-ctas {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+.splash-cta {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.splash-cta--primary {
+  background: #f59e0b;
+  color: #0a0a0f;
+}
+.splash-cta--primary:hover {
+  background: #fbbf24;
+  color: #0a0a0f;
+}
+.splash-cta--secondary {
+  background: transparent;
+  color: #f59e0b;
+  border: 1px solid #1e293b;
+}
+.splash-cta--secondary:hover {
+  border-color: #f59e0b;
+  background: #f59e0b;
+  color: #0a0a0f;
+}
+.splash-cta--ghost {
+  background: transparent;
+  color: #e2e8f0;
+  border: 1px solid #1e293b;
+}
+.splash-cta--ghost:hover {
+  border-color: #f59e0b;
+  color: #f59e0b;
 }

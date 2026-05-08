@@ -31,13 +31,13 @@ A rule in `trust-firewall.yaml` has four fields:
 Rules are organized into three tiers, evaluated in order:
 
 <CardGrid stagger>
-  <Card title="Trust Circle" icon="check-circle">
+  <Card title="Trust Circle" icon="approve-check-circle">
     Auto-approve for known-safe operations. Read calls, build tools, git history inspection.
   </Card>
   <Card title="Restricted" icon="question-circle">
     Ask the human. Potentially destructive or risky operations that need confirmation.
   </Card>
-  <Card title="Blocked" icon="x-circle">
+  <Card title="Blocked" icon="close">
     Non-overridable denial. Force push, secret access, unsafe patterns. No prompt, no override.
   </Card>
 </CardGrid>

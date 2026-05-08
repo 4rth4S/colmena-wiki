@@ -73,25 +73,25 @@ tags: [security, audit, custom-pattern]
 Colmena supports 7 topologies. Choose the one that fits your workflow:
 
 <CardGrid stagger>
-  <Card title="Sequential" icon="arrow-right">
+  <Card title="Sequential" icon="right-arrow">
     Agents work one after another. Each receives the previous agent's output.
   </Card>
-  <Card title="Fan-out-merge" icon="share-2">
+  <Card title="Fan-out-merge" icon="external">
     Multiple agents work in parallel, then a coordinator merges results.
   </Card>
-  <Card title="Hierarchical" icon="layers">
+  <Card title="Hierarchical" icon="puzzle">
     A coordinator delegates to workers. Used by plan-then-execute.
   </Card>
-  <Card title="Adversarial" icon="zap">
+  <Card title="Adversarial" icon="rocket">
     Two agents with opposing goals. Red team vs blue team.
   </Card>
-  <Card title="Peer" icon="users">
+  <Card title="Peer" icon="puzzle">
     Agents work independently and share findings as peers.
   </Card>
-  <Card title="Iterative" icon="refresh-cw">
+  <Card title="Iterative" icon="random">
     Work cycles through improvement until quality criteria are met.
   </Card>
-  <Card title="Recursive" icon="repeat">
+  <Card title="Recursive" icon="random">
     Problems decomposed recursively, each level adding detail.
   </Card>
 </CardGrid>

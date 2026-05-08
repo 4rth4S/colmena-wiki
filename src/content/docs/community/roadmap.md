@@ -10,28 +10,28 @@ Colmena is developed in numbered milestones. Each milestone ships a coherent set
 ## Completed milestones
 
 <CardGrid stagger>
-  <Card title="M0" icon="check-circle">
+  <Card title="M0" icon="approve-check-circle">
     Trust Firewall + Approval Hub. Core rule engine and permission system.
   </Card>
-  <Card title="M1" icon="check-circle">
+  <Card title="M1" icon="approve-check-circle">
     Wisdom Library + Pattern Selector + RRA hardening.
   </Card>
-  <Card title="M2" icon="check-circle">
+  <Card title="M2" icon="approve-check-circle">
     Auditor Review Protocol + ELO Engine + Findings Store.
   </Card>
-  <Card title="M3" icon="check-circle">
+  <Card title="M3" icon="approve-check-circle">
     Dynamic trust calibration. Role-bound permissions + ELO to firewall rules.
   </Card>
-  <Card title="M4" icon="check-circle">
+  <Card title="M4" icon="approve-check-circle">
     Mentor prompt refinement. Debate pattern for prompt improvement.
   </Card>
-  <Card title="M5" icon="check-circle">
+  <Card title="M5" icon="approve-check-circle">
     Plug-and-play onboarding: `colmena setup` command.
   </Card>
-  <Card title="M6" icon="check-circle">
+  <Card title="M6" icon="approve-check-circle">
     Intelligent role and pattern creation. 8 role categories, 7 topologies.
   </Card>
-  <Card title="M7" icon="check-circle">
+  <Card title="M7" icon="approve-check-circle">
     Generic roles, patterns, topology mapping, QPC auditor framework, inter-agent directive.
   </Card>
 </CardGrid>

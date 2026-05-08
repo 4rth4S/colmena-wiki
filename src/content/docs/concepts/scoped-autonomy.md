@@ -24,13 +24,13 @@ Colmena's position: **policy is code, review is mandatory, trust is earned.**
   <Card title="Under 15ms latency" icon="clock">
     Pre-compiled regexes, no network calls, pure Rust. The hook path completes in under 15ms.
   </Card>
-  <Card title="Safe fallback" icon="shield">
+  <Card title="Safe fallback" icon="padlock">
     Any hook failure returns <code>ask</code> -- never <code>deny</code> or crash. A broken hook must not trap the user.
   </Card>
-  <Card title="Files over databases" icon="file">
+  <Card title="Files over databases" icon="document">
     YAML config, JSON queue, JSONL logs, git-versionable. No external services or databases.
   </Card>
-  <Card title="Human authority wins" icon="users">
+  <Card title="Human authority wins" icon="puzzle">
     YAML overrides always beat ELO ratings. Revoke everything with a single command.
   </Card>
 </CardGrid>

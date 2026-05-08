@@ -44,22 +44,22 @@ Key fields:
 Colmena ships with 13 built-in patterns across 7 topologies:
 
 <CardGrid stagger>
-  <Card title="Sequential" icon="arrow-right">
+  <Card title="Sequential" icon="right-arrow">
     Agents work one after another. Pipeline and code-review-cycle use this topology.
   </Card>
-  <Card title="Fan-out-merge" icon="share-2">
+  <Card title="Fan-out-merge" icon="external">
     Multiple agents work in parallel, then a coordinator merges results.
   </Card>
-  <Card title="Hierarchical" icon="layers">
+  <Card title="Hierarchical" icon="puzzle">
     A coordinator delegates to workers. Plan-then-execute uses this topology.
   </Card>
-  <Card title="Adversarial" icon="zap">
+  <Card title="Adversarial" icon="rocket">
     Agents with opposing goals. Red team vs blue team scenarios.
   </Card>
-  <Card title="Iterative" icon="refresh-cw">
+  <Card title="Iterative" icon="random">
     Work goes through cycles of improvement until quality criteria are met.
   </Card>
-  <Card title="Recursive" icon="repeat">
+  <Card title="Recursive" icon="random">
     Agents decompose problems recursively, each level adding detail.
   </Card>
 </CardGrid>
