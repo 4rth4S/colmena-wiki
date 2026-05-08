@@ -5,10 +5,6 @@ description: Cross-crate refactoring with iterative review cycles
 
 import { Steps, Card, CardGrid } from '@astrojs/starlight/components';
 
-**Persona.** Developer or tech lead. A Rust workspace with 4 crates needs a refactor that touches all crates. One agent cannot track cross-crate side effects.
-
-**Pattern.** `colmena-self-dev` -- iterative topology with multiple developers, a code reviewer, and an architect.
-
 ## The problem
 
 A refactor touches `colmena-core`, `colmena-cli`, `colmena-mcp`, and `colmena-filter` at the same time. If one agent owns the whole workspace, the context window is too small. You need agents scoped per crate, a coordinator to catch regressions, and a reviewer who reads the full diff.

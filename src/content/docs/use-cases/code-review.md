@@ -5,10 +5,6 @@ description: Structured code review with centralized auditor evaluation
 
 import { Steps, Card, CardGrid } from '@astrojs/starlight/components';
 
-**Persona.** Developer or tech lead. A Rust workspace needs a refactor that touches all crates. One human with one Claude cannot track cross-crate side effects.
-
-**Pattern.** `code-review-cycle` -- sequential topology with a developer, code reviewer, and auditor.
-
 ## The problem
 
 A refactor touches multiple crates at the same time. If one agent owns the whole workspace, the context window is too small. If you split manually, you miss dependencies. You need agents scoped per crate, a coordinator to catch regressions, and a reviewer who reads the full diff.

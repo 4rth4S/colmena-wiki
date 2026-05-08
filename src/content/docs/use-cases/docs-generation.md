@@ -5,10 +5,6 @@ description: Multi-agent technical writing with architectural review
 
 import { Tabs, TabItem, Steps, Card, CardGrid } from '@astrojs/starlight/components';
 
-**Persona.** Technical writer. You need to produce documentation from source material -- getting-started guides, use-case docs, reference manuals -- and ensure architectural accuracy.
-
-**Pattern.** `code-review-cycle` -- sequential topology with writers, an architect, and an auditor.
-
 ## The problem
 
 A documentation project involves multiple sections that must be consistent in voice, style, and technical accuracy. One writer cannot produce 20+ pages quickly. Multiple writers need coordination, architectural review for correctness, and centralized quality evaluation.

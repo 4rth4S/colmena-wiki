@@ -5,10 +5,6 @@ description: On-call SRE investigation with scoped read-only agents
 
 import { Steps, Card, CardGrid } from '@astrojs/starlight/components';
 
-**Persona.** On-call SRE at 3 AM. Production latency spiked. You need an agent to investigate -- check pods, scrape metrics, tail logs -- without exposing credentials or allowing any destructive operation.
-
-**Pattern.** `plan-then-execute` -- hierarchical topology with a coordinator and two workers.
-
 ## The problem
 
 At 3 AM you want answers, not permission prompts. Every `kubectl get`, `curl` to the metrics endpoint, and `journalctl` query should be auto-approved. But a hallucinated `kubectl delete` should be blocked outright.
