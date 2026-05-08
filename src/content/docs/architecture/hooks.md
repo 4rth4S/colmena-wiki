@@ -3,7 +3,7 @@ title: Hook Pipeline
 description: How Colmena's four hooks integrate with Claude Code
 ---
 
-import { Steps, Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid } from '@astrojs/starlight/components';
 
 Colmena registers four hooks in `~/.claude/settings.json`. Each hook intercepts a specific lifecycle event in Claude Code.
 
@@ -39,14 +39,11 @@ Fires after Bash commands complete. Only affects Bash -- other tools pass throug
 
 Four filters run in sequence, each wrapped in `catch_unwind`:
 
-<Steps>
-
 1. **ANSI strip** -- remove escape sequences so subsequent filters see clean text
 2. **Stderr-only** -- if exit code != 0 and stderr has content, discard stdout (noisy build output), keep stderr (errors)
 3. **Dedup** -- collapse N+ consecutive identical lines (e.g. "Downloading crate..." x 50 to 1 line)
 4. **Truncate** -- hard cap at 150 lines / 30K chars, preserves head + tail
 
-</Steps>
 
 Saves 30-50% of tokens from noisy commands.
 

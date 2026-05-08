@@ -3,7 +3,7 @@ title: Install Mode B
 description: Let your Claude Code bootstrap Colmena from the repo
 ---
 
-import { Steps, Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid } from '@astrojs/starlight/components';
 
 Mode B is the "point your Claude Code at this repo" path. Instead of reading the docs and running commands yourself, your Claude Code reads `CLAUDE.md`, builds Colmena, runs `setup`, and registers the MCP server -- all from a single prompt.
 
@@ -16,8 +16,6 @@ Mode B is the "point your Claude Code at this repo" path. Instead of reading the
 If you prefer to run each command yourself, use [Mode A](/quickstart/getting-started).
 
 ## Step by step
-
-<Steps>
 
 1. **Clone and open**
 
@@ -48,7 +46,6 @@ Once installed, CC can use Colmena tools natively:
 > Use mission_suggest to see if this repo needs Colmena for a small doc task. If yes, use mission_spawn to create the squad.
 
 
-</Steps>
 
 ## Mode A vs Mode B
 

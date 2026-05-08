@@ -3,7 +3,7 @@ title: Trust Firewall
 description: How the firewall evaluates every tool call deterministically
 ---
 
-import { Tabs, TabItem, Steps, Card, CardGrid } from '@astrojs/starlight/components';
+import { Tabs, TabItem, Card, CardGrid } from '@astrojs/starlight/components';
 
 The trust firewall is the core of Colmena. It evaluates every tool call against YAML rules before the call executes.
 

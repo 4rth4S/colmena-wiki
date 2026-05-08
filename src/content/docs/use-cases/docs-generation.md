@@ -3,7 +3,7 @@ title: Docs Generation
 description: Multi-agent technical writing with architectural review
 ---
 
-import { Tabs, TabItem, Steps, Card, CardGrid } from '@astrojs/starlight/components';
+import { Tabs, TabItem, Card, CardGrid } from '@astrojs/starlight/components';
 
 ## The problem
 
@@ -54,8 +54,6 @@ colmena mission spawn --from docs-gen-colmena.mission.yaml
 
 ## Agent assignments
 
-<Steps>
-
 1. **Three writers work in parallel** -- each writes their assigned section
    - Writer 1: Quickstart (3 pages) + Concepts (4 pages) + Index
    - Writer 2: Use Cases (6 pages with manifest YAML)
@@ -63,7 +61,6 @@ colmena mission spawn --from docs-gen-colmena.mission.yaml
 2. **Architect reviews** all pages for architectural accuracy, cross-reference correctness, manifest YAML validity
 3. **Auditor evaluates** with QPC framework -- scores all pages
 
-</Steps>
 
 ## Design requirements
 

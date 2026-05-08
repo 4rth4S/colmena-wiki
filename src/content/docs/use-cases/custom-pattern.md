@@ -3,7 +3,7 @@ title: Custom Pattern
 description: Creating and using custom orchestration patterns
 ---
 
-import { Tabs, TabItem, Steps, Card, CardGrid } from '@astrojs/starlight/components';
+import { Tabs, TabItem, Card, CardGrid } from '@astrojs/starlight/components';
 
 ## When to create a custom pattern
 

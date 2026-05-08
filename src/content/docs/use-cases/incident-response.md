@@ -3,7 +3,7 @@ title: Incident Response
 description: On-call SRE investigation with scoped read-only agents
 ---
 
-import { Steps, Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid } from '@astrojs/starlight/components';
 
 ## The problem
 

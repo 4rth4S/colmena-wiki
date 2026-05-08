@@ -3,13 +3,11 @@ title: Contributing
 description: How to set up, build, test, and submit changes to Colmena
 ---
 
-import { Steps, Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid } from '@astrojs/starlight/components';
 
 Colmena is open source and welcomes contributions. This page covers the development workflow.
 
 ## Development setup
-
-<Steps>
 
 1. **Clone the repository**
 
@@ -55,7 +53,6 @@ cargo fmt --all --check
 CI-enforced. Run before every PR.
 
 
-</Steps>
 
 ## Project conventions
 

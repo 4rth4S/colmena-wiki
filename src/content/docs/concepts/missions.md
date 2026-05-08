@@ -3,7 +3,7 @@ title: Missions & Delegations
 description: Multi-agent missions, manifests, and runtime permission scoping
 ---
 
-import { Tabs, TabItem, Steps, Card, CardGrid } from '@astrojs/starlight/components';
+import { Tabs, TabItem, Card, CardGrid } from '@astrojs/starlight/components';
 
 Missions are the unit of multi-agent work in Colmena. A mission defines who works on what, with what permissions, and how the work is reviewed.
 
@@ -79,8 +79,6 @@ Key properties:
 
 ## Mission lifecycle
 
-<Steps>
-
 1. **Init** -- `colmena mission init` creates a manifest
 2. **Validate** -- `colmena mission validate` checks the schema
 3. **Spawn** -- `colmena mission spawn` creates agents, delegations, and prompts
@@ -88,7 +86,6 @@ Key properties:
 5. **Review** -- Each agent submits for auditor review
 6. **Deactivate** -- `colmena mission deactivate` revokes all delegations
 
-</Steps>
 
 ## Mission enforcement
 

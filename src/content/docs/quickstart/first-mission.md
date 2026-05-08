@@ -3,7 +3,7 @@ title: Your First Mission
 description: Create a manifest and spawn your first multi-agent mission
 ---
 
-import { Tabs, TabItem, Steps, Card, CardGrid } from '@astrojs/starlight/components';
+import { Tabs, TabItem, Card, CardGrid } from '@astrojs/starlight/components';
 
 Missions start with a manifest -- a YAML file that defines the squad, their roles, their scope, and how they work together.
 

@@ -3,7 +3,7 @@ title: Mission Lifecycle
 description: How missions flow from spawn through review to deactivation
 ---
 
-import { Steps, Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid } from '@astrojs/starlight/components';
 
 The mission lifecycle is the end-to-end flow from manifest creation to deactivation, with the ELO cycle closed at every step.
 
@@ -14,8 +14,6 @@ MissionManifest → spawn_mission() → Agent tool calls →
 review_submit → SubagentStop → review_evaluate → 
 ELO update → calibrate run → mission deactivate
 ```
-
-<Steps>
 
 1. **Manifest validation.** `MissionManifest::from_path` validates id, pattern, TTL, roles, and ownership.
 2. **Border case check.** If `enforce_missions: false` is explicit and there are 3+ roles, the spawn aborts with options. The operator wins.
@@ -29,7 +27,6 @@ ELO update → calibrate run → mission deactivate
 10. **Calibration.** `colmena calibrate run` maps ELO to trust tiers.
 11. **Deactivation.** `colmena mission deactivate` revokes all delegations, marks agents as revoked.
 
-</Steps>
 
 ## spawn_mission() internals
 
