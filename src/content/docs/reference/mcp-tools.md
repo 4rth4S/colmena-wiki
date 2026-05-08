@@ -3,8 +3,6 @@ title: MCP Tools
 description: Complete reference for all 27 Colmena MCP tools
 ---
 
-import { Tabs, TabItem, Card, CardGrid } from '@astrojs/starlight/components';
-
 Colmena exposes 27 tools via the MCP server. Claude Code calls them natively as `mcp__colmena__*`.
 
 ## Firewall and delegations (6 tools)

@@ -3,8 +3,6 @@ title: Security
 description: Security disclosure process, threat model, and security practices
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
-
 ## Disclosure process
 
 If you discover a security vulnerability in Colmena, please follow this process:

@@ -81,9 +81,12 @@ a:hover {
   color: #fbbf24;
 }
 
-/* Sidebar */
-.sidebar-content {
-  border-right: 1px solid var(--sl-color-hairline);
+/* Sidebar active item — black text on amber, always readable */
+[aria-current='page'],
+[aria-current='page']:hover,
+[aria-current='page']:focus {
+  color: #0a0a0f !important;
+  background-color: #f59e0b !important;
 }
 
 /* Cards — matching colmena.space */

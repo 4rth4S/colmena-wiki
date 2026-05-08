@@ -1,13 +1,13 @@
 ---
 title: Colmena
-description: Deterministic governance for multi-agent Claude Code
+description: Deterministic governance for multi-agent Claude Code — scoped autonomy, verifiable enforcement, earned trust.
 template: splash
 hero:
-  tagline: Scoped autonomy, deterministic enforcement.
+  tagline: Multi-agent Claude Code, governed.
   image:
     file: https://raw.githubusercontent.com/4rth4S/colmena/main/docs/colmena-banner.png
   actions:
-    - text: Quickstart
+    - text: Get started
       link: /quickstart/getting-started/
       icon: right-arrow
       variant: primary
@@ -15,24 +15,55 @@ hero:
       link: https://github.com/4rth4S/colmena
       icon: github
       variant: secondary
+    - text: Install Mode B
+      link: /quickstart/install-mode-b/
+      icon: setting
+      variant: minimal
 ---
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
-## Which fits you?
+Colmena sits between Claude Code and your filesystem. Every tool call — Bash, Write, WebFetch — passes through a **deterministic firewall** that evaluates rules, delegations, ELO trust scores, and mission gates. Under 100ms. No network calls. No databases. Just YAML, JSON, and Rust.
+
+## How it works
 
 <CardGrid stagger>
-  <Card title="Pentester" icon="shield">
-    Scoped Caido-native agents, restricted Bash, findings store, replayable audit trail.
+  <Card title="1. Define your roles" icon="setting">
+    Write a role YAML: which tools, which scope, which trust level. Colmena ships with 15+ pre-built roles — pentester, auditor, developer, architect, and more.
   </Card>
-  <Card title="Developer" icon="code">
-    Auto-approve for <code>cargo test</code>, <code>git log</code>; ask on <code>push</code>; block <code>--force</code>.
+  <Card title="2. Spawn a mission" icon="rocket">
+    One command. <code>colmena mission spawn</code> reads a manifest, resolves the pattern, composes agent prompts with mission markers, and creates time-boxed delegations.
   </Card>
-  <Card title="DevOps / SRE" icon="server">
-    Bash patterns for <code>kubectl</code>, <code>terraform</code> pre-wired. Secrets paths blocked.
+  <Card title="3. Agents work scoped" icon="activity">
+    Every tool call hits the PreToolUse hook. The firewall checks: blocked? delegated? YAML override? ELO override? mission gate? If nothing matches, ask the human.
+  </Card>
+  <Card title="4. Audit closes the loop" icon="check-circle">
+    Workers submit reviews. The auditor scores QPC (Quality, Precision, Comprehensiveness). Scores feed ELO. ELO shapes future trust. The cycle closes.
   </Card>
 </CardGrid>
 
-## Why Colmena
+## Built for real workflows
 
-Colmena gives agents **freedom within their domain**, with **deterministic enforcement** at the boundary. Every firewall decision writes to the audit log with the matching rule ID. Policy is code, review is mandatory, trust is earned.
+<CardGrid stagger>
+  <Card title="Pentest BBP" icon="shield">
+    Scope-locked Caido agents. Restricted Bash. Append-only findings store. Replayable audit trail. Every exploit chain verified before scoring.
+  </Card>
+  <Card title="Code Review" icon="code">
+    Auto-approve <code>cargo test</code>, <code>git log</code>. Ask on <code>git push</code>. Block <code>--force</code>. Peer review enforced. ELO-trusted reviewers.
+  </Card>
+  <Card title="Incident Response" icon="warning">
+    Kubernetes, Terraform, SSH — pre-wired Bash patterns. Secrets paths blocked. Every command logged. The audit trail survives the incident.
+  </Card>
+</CardGrid>
+
+## Why YAML, not prompts
+
+Colmena's firewall is **deterministic**. Rules are YAML, evaluated in a fixed precedence chain. Human overrides always beat ELO. Runtime delegations expire. The audit log records every decision with the matching rule ID — not an LLM's best guess. When you need to know why an agent was allowed to `rm -rf`, the answer is in `audit.log`, line 847.
+
+## Start building
+
+<div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem;">
+  <a href="/quickstart/getting-started/" style="background: #f59e0b; color: #0a0a0f; padding: 0.75rem 1.5rem; border-radius: 0.375rem; font-weight: 600; text-decoration: none; display: inline-block;">Quickstart →</a>
+  <a href="/concepts/scoped-autonomy/" style="background: #12121a; color: #f59e0b; padding: 0.75rem 1.5rem; border-radius: 0.375rem; font-weight: 600; text-decoration: none; border: 1px solid #1e293b; display: inline-block;">Read the concepts</a>
+  <a href="https://github.com/4rth4S/colmena" style="background: #12121a; color: #e2e8f0; padding: 0.75rem 1.5rem; border-radius: 0.375rem; font-weight: 600; text-decoration: none; border: 1px solid #1e293b; display: inline-block;">GitHub →</a>
+</div>

@@ -3,8 +3,6 @@ title: Role YAML
 description: Complete reference for the role YAML configuration format
 ---
 
-import { Tabs, TabItem, Card, CardGrid } from '@astrojs/starlight/components';
-
 Roles are defined in YAML files in the library. Each role declares its tools, permissions, and trust configuration.
 
 ## Structure

@@ -3,8 +3,6 @@ title: CLI Commands
 description: Complete reference for all colmena CLI subcommands
 ---
 
-import { Tabs, TabItem, Card, CardGrid } from '@astrojs/starlight/components';
-
 The `colmena` CLI is the primary interface for configuration, management, and monitoring.
 
 ## Setup and onboarding

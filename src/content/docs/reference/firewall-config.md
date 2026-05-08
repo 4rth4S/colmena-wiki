@@ -3,8 +3,6 @@ title: Firewall Config
 description: Complete reference for the trust-firewall.yaml configuration
 ---
 
-import { Tabs, TabItem, Card, CardGrid } from '@astrojs/starlight/components';
-
 The `trust-firewall.yaml` file is the core configuration for Colmena's deterministic rule engine. It defines what tool calls are allowed, asked, or blocked.
 
 ## File location
