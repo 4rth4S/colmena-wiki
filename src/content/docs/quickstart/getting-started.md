@@ -39,6 +39,17 @@ Point your Claude Code at the Colmena repo and let it bootstrap everything:
 See the [Install Mode B](/quickstart/install-mode-b) page for the full walkthrough.
 
 </TabItem>
+<TabItem label="Mode C -- From crates.io">
+
+```bash
+cargo install colmena
+colmena setup
+colmena doctor
+```
+
+No Rust toolchain? Download a prebuilt binary from [GitHub Releases](https://github.com/4rth4S/colmena/releases).
+
+</TabItem>
 </Tabs>
 
 ## What `colmena setup` does

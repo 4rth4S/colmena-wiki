@@ -129,3 +129,15 @@ export COLMENA_PRIVATE_LIBRARY=/path/to/private-library
 ```
 
 Private entries with the same `id` override public ones. Use this for experimental or personal roles.
+
+## CLI commands
+
+Create, clone, and validate roles from the command line:
+
+```bash
+colmena library create-role --id my_role --description "..." --category development
+colmena role clone pentester --as my_pentester
+colmena role doctor my_role
+```
+
+See the [CLI reference](/reference/cli) for all role management commands.

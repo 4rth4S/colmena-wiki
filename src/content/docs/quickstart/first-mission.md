@@ -70,6 +70,16 @@ colmena mission spawn --from my-first-mission.mission.yaml
 
 This writes agent prompts, creates time-limited delegations, and embeds mission markers.
 
+### Auto-spawn
+
+For missions with 3+ agents, use `--auto-spawn` to generate a Mission Lead:
+
+```bash
+colmena mission spawn --from my-first-mission.mission.yaml --auto-spawn
+```
+
+This generates a single Mission Lead subagent that orchestrates the entire squad — one prompt into CC handles the full mission. Without the flag, mission_spawn writes individual agent prompts to stdout.
+
 ## Run the mission
 
 <Tabs>

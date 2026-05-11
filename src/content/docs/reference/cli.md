@@ -14,6 +14,7 @@ The `colmena` CLI is the primary interface for configuration, management, and mo
 | `colmena setup --force` | Overwrite custom files |
 | `colmena doctor` | Full health check (7 categories) |
 | `colmena install` | Register hooks in settings.json |
+| `colmena upgrade [--verbose]` | Check crates.io for newer versions |
 
 ## Firewall and config
 
@@ -39,6 +40,7 @@ The `colmena` CLI is the primary interface for configuration, management, and mo
 | `colmena mission validate <file>.mission.yaml` | Check schema and library refs |
 | `colmena mission spawn --from <file>.mission.yaml` | Create agents and delegations |
 | `colmena mission spawn --from <file>.mission.yaml --dry-run` | Preview first |
+| `colmena mission spawn --from <file>.mission.yaml --auto-spawn` | Generate a Mission Lead that spawns all workers |
 | `colmena mission list` | List active missions |
 | `colmena mission deactivate --id <id>` | Revoke all delegations |
 | `colmena mission abort --id <id>` | Emergency stop |
@@ -52,6 +54,13 @@ The `colmena` CLI is the primary interface for configuration, management, and mo
 | `colmena library select --mission "..."` | Pattern selector and mission generator |
 | `colmena library create-role` | Create a new role with intelligent defaults |
 | `colmena library create-pattern` | Create a new pattern with topology detection |
+
+## Role management
+
+| Command | Purpose |
+|---------|---------|
+| `colmena role clone <existing> --as <new_id>` | Copy a role as a template |
+| `colmena role doctor <id>` | Validate YAML and suggest improvements |
 
 ## Reviews and ELO
 
