@@ -88,9 +88,9 @@ Key properties:
 
 ## Auto-spawn mode
 
-With `--auto-spawn`, `colmena mission spawn` generates a **Mission Lead** — a single subagent that orchestrates the entire squad. Instead of pasting N agent prompts manually, you paste one Mission Lead prompt. The Mission Lead spawns each worker in the correct topology order, monitors their progress, and ensures every artifact goes through review.
+With `--auto-spawn`, `colmena mission spawn` generates a **Mission Lead** — a single subagent that orchestrates the entire squad in the correct topology order, monitors their progress, and ensures every artifact goes through review. Paste one Mission Lead prompt into Claude Code and it orchestrates the entire squad.
 
-This is the recommended flow for missions with 3+ agents. Without `--auto-spawn`, you paste each agent prompt individually.
+Without `--auto-spawn`, mission_spawn writes individual agent prompts to stdout for the operator to use directly with CC.
 
 
 ## Mission enforcement
