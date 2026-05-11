@@ -86,6 +86,12 @@ Key properties:
 5. **Review** -- Each agent submits for auditor review
 6. **Deactivate** -- `colmena mission deactivate` revokes all delegations
 
+## Auto-spawn mode
+
+With `--auto-spawn`, `colmena mission spawn` generates a **Mission Lead** — a single subagent that orchestrates the entire squad. Instead of pasting N agent prompts manually, you paste one Mission Lead prompt. The Mission Lead spawns each worker in the correct topology order, monitors their progress, and ensures every artifact goes through review.
+
+This is the recommended flow for missions with 3+ agents. Without `--auto-spawn`, you paste each agent prompt individually.
+
 
 ## Mission enforcement
 

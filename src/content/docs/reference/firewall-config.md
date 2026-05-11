@@ -158,3 +158,15 @@ The firewall evaluates rules in this order:
 9. Defaults
 
 Stop at the first match.
+
+### Shell chain guard
+
+When `chain_aware: true` (default), Bash chains using `&&`, `||`, `;`, or `|` are split into individual pieces and each piece is re-evaluated against the full rule set. Bare assignments (`KEY=value`) auto-approve. Subshells (`$(...)`) and backticks fall through to the legacy chain guard (ask).
+
+```bash
+mkdir /tmp/build && cd /tmp/build && git clone <url> && cargo build
+```
+
+Each of the 4 pieces is evaluated independently. One blocked piece blocks the whole chain.
+
+Toggle `chain_aware: false` in `trust-firewall.yaml` to disable per-piece evaluation.
