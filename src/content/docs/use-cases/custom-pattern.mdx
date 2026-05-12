@@ -3,6 +3,7 @@ title: Custom Pattern
 description: Creating and using custom orchestration patterns
 ---
 
+import { Card, CardGrid } from '@astrojs/starlight/components';
 
 ## When to create a custom pattern
 
@@ -69,13 +70,29 @@ tags: [security, audit, custom-pattern]
 
 Colmena supports 7 topologies. Choose the one that fits your workflow:
 
-- **Sequential** — Agents work one after another. Each receives the previous agent's output.
-- **Fan-out-merge** — Multiple agents work in parallel, then a coordinator merges results.
-- **Hierarchical** — A coordinator delegates to workers. Used by plan-then-execute.
-- **Adversarial** — Two agents with opposing goals. Red team vs blue team.
-- **Peer** — Agents work independently and share findings as peers.
-- **Iterative** — Work cycles through improvement until quality criteria are met.
-- **Recursive** — Problems decomposed recursively, each level adding detail.
+<CardGrid stagger>
+  <Card title="Sequential" icon="right-arrow">
+    Agents work one after another. Each receives the previous agent's output.
+  </Card>
+  <Card title="Fan-out-merge" icon="external">
+    Multiple agents work in parallel, then a coordinator merges results.
+  </Card>
+  <Card title="Hierarchical" icon="puzzle">
+    A coordinator delegates to workers. Used by plan-then-execute.
+  </Card>
+  <Card title="Adversarial" icon="rocket">
+    Two agents with opposing goals. Red team vs blue team.
+  </Card>
+  <Card title="Peer" icon="puzzle">
+    Agents work independently and share findings as peers.
+  </Card>
+  <Card title="Iterative" icon="random">
+    Work cycles through improvement until quality criteria are met.
+  </Card>
+  <Card title="Recursive" icon="random">
+    Problems decomposed recursively, each level adding detail.
+  </Card>
+</CardGrid>
 
 ## Custom roles
 

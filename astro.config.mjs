@@ -1,14 +1,9 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-import { rehypeStripImports } from './remark-strip-imports.mjs';
-
 // https://astro.build/config
 export default defineConfig({
   site: 'https://docs.colmena.space',
-  markdown: {
-    rehypePlugins: [rehypeStripImports],
-  },
   integrations: [
     starlight({
       title: 'Colmena',
