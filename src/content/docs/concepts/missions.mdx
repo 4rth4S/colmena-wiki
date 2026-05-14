@@ -86,9 +86,13 @@ Key properties:
 5. **Review** -- Each agent submits for auditor review
 6. **Deactivate** -- `colmena mission deactivate` revokes all delegations
 
-## Auto-spawn mode
+## Auto-spawn mode (flat-team orchestration)
 
-With `--auto-spawn`, `colmena mission spawn` generates a **Mission Lead** — a single subagent that orchestrates the entire squad in the correct topology order, monitors their progress, and ensures every artifact goes through review. Paste one Mission Lead prompt into Claude Code and it orchestrates the entire squad.
+With `--auto-spawn`, `colmena mission spawn` generates an **`ORCHESTRATE.md`** file in the mission directory. This file contains step-by-step instructions for the operator's Claude Code session: team setup, Agent() calls for every worker as teammates, and delegation commands. The operator's session acts as **team-lead** — no intermediate Mission Lead agent is needed.
+
+The flat-team pattern ensures each agent independently calls `review_submit`, so the ELO trust calibration cycle works per-agent across the whole squad.
+
+In Claude Code, say **"orquestá esta misión"** and Claude handles the rest.
 
 Without `--auto-spawn`, mission_spawn writes individual agent prompts to stdout for the operator to use directly with CC.
 

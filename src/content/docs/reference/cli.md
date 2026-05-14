@@ -40,7 +40,7 @@ The `colmena` CLI is the primary interface for configuration, management, and mo
 | `colmena mission validate <file>.mission.yaml` | Check schema and library refs |
 | `colmena mission spawn --from <file>.mission.yaml` | Create agents and delegations |
 | `colmena mission spawn --from <file>.mission.yaml --dry-run` | Preview first |
-| `colmena mission spawn --from <file>.mission.yaml --auto-spawn` | Generate a Mission Lead that spawns all workers |
+| `colmena mission spawn --from <file>.mission.yaml --auto-spawn` | Flat-team orchestration: writes ORCHESTRATE.md so Claude Code spawns all agents as teammates |
 | `colmena mission list` | List active missions |
 | `colmena mission deactivate --id <id>` | Revoke all delegations |
 | `colmena mission abort --id <id>` | Emergency stop |

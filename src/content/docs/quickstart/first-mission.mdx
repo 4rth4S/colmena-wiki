@@ -70,15 +70,19 @@ colmena mission spawn --from my-first-mission.mission.yaml
 
 This writes agent prompts, creates time-limited delegations, and embeds mission markers.
 
-### Auto-spawn
+### Auto-spawn (flat-team orchestration)
 
-For missions with 3+ agents, use `--auto-spawn` to generate a Mission Lead:
+For missions with any number of agents, use `--auto-spawn` for a one-command orchestration experience:
 
 ```bash
 colmena mission spawn --from my-first-mission.mission.yaml --auto-spawn
 ```
 
-This generates a single Mission Lead subagent that orchestrates the entire squad — one prompt into CC handles the full mission. Without the flag, mission_spawn writes individual agent prompts to stdout.
+This generates an `ORCHESTRATE.md` file with everything the operator's Claude Code session needs: team setup instructions, Agent() calls for every worker (subagent_type, name, team_name, prompt), and delegation commands. No intermediate Mission Lead — the operator's session acts as team-lead and spawns all agents directly as teammates.
+
+In Claude Code, just say **"orquestá esta misión"** and Claude reads the plan, creates the team, spawns all agents, and sets up delegations automatically. Each agent independently calls `review_submit` — the ELO trust cycle works per-agent.
+
+Without `--auto-spawn`, mission_spawn writes individual agent prompts to stdout.
 
 ## Run the mission
 
