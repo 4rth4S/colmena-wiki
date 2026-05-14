@@ -1,0 +1,239 @@
+---
+title: End-to-End Guide
+description: From zero to a completed multi-agent mission with Colmena + Claude Code
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+This guide takes you from a clean install to a completed multi-agent mission. You'll set up Colmena once, then spawn missions with a single command.
+
+## One-time setup
+
+### 1. Install Colmena
+
+```bash
+git clone https://github.com/4rth4S/colmena.git ~/colmena
+cd ~/colmena
+cargo install --path colmena-cli
+```
+
+### 2. Bootstrap config
+
+```bash
+colmena setup --force
+```
+
+This creates `~/.colmena/config/` with the trust firewall, library of roles and patterns, hooks, and registers the Colmena MCP server in `~/.mcp.json`.
+
+### 3. Enable mission enforcement
+
+Edit `~/.colmena/config/trust-firewall.yaml`:
+
+```yaml
+enforce_missions: true
+```
+
+When active, agents cannot stop without calling `review_submit` first — the ELO cycle stays closed.
+
+### 4. Add orchestration instructions to your workspace
+
+Create a `CLAUDE.md` in your project root so Claude Code knows how to handle mission orchestration:
+
+```markdown
+## Orquestacion de Misiones Colmena
+
+Cuando el usuario pida "orquesta esta mision" (o similar):
+
+1. Busca `ORCHESTRATE.md` en el directorio de la mision
+2. Ejecuta TeamCreate segun las instrucciones
+3. Spawnea todos los agentes como teammates con Agent(name, subagent_type, team_name, prompt)
+4. Crea delegaciones para IDs exactos (`rol@team`) con `colmena delegate add`
+5. Monitorea hallazgos -> consolida -> review_submit -> review_evaluate
+6. Al finalizar: shutdown_request a cada agente, TeamDelete
+```
+
+## Every mission after that
+
+### 1. Create a manifest
+
+```bash
+colmena mission init mi-pentest --pattern ecommerce-pentest --for "Pentest e-commerce Mi Tienda"
+```
+
+This generates `mi-pentest.mission.yaml`. Edit it to adjust roles, tasks, and scope:
+
+```yaml
+version: 1
+mission_id: mi-pentest-2026
+description: "Pentest e-commerce Mi Tienda"
+author: operator
+pattern: ecommerce-pentest
+mission_ttl_hours: 8
+
+agents:
+  - role: security_architect
+    task: >
+      Liderar el pentest. Fase 1: crear PLAN_ATAQUE.md con vectores
+      web y API. Fase 2: coordinar workers. Fase 3: consolidar REPORTE.md.
+
+  - role: web_pentester
+    task: >
+      Pentest frontend. Vectores: XSS, CSRF, clickjacking, session
+      management, admin panel, info disclosure.
+
+  - role: api_pentester
+    task: >
+      Pentest API. Vectores: BOLA/IDOR, mass assignment, auth bypass,
+      injection, rate limiting, data exposure, business logic.
+
+  - role: auditor
+    task: Evaluar todos los hallazgos con QPC (Quality/Precision/Comprehensiveness).
+
+scope:
+  paths:
+    - /home/you/project/missions/mi-pentest
+
+metadata:
+  target: "https://mi-tienda.com"
+  tech_stack: "Next.js, Payload CMS, MongoDB"
+```
+
+### 2. Spawn
+
+```bash
+colmena mission spawn --from mi-pentest.mission.yaml --auto-spawn --extend-existing
+```
+
+The output tells you exactly what will happen:
+
+```
+[AUTO-SPAWN] Flat-team orchestration ready. In Claude Code, say:
+  "orquesta esta mision"
+
+Agents to spawn as teammates (4 total):
+  - Security Architect | subagent_type: "security_architect" | name: "security_architect"
+  - Web Pentester | subagent_type: "web_pentester" | name: "web_pentester"
+  - API Pentester | subagent_type: "api_pentester" | name: "api_pentester"
+  - Auditor | subagent_type: "auditor" | name: "auditor"
+```
+
+This writes `ORCHESTRATE.md` to the mission directory and creates 68 time-limited delegations for all tools the agents need.
+
+### 3. Orchestrate
+
+In Claude Code, say:
+
+```
+orquesta esta mision
+```
+
+Claude reads `ORCHESTRATE.md` and automatically:
+
+1. **TeamCreate** — creates a flat team for the mission
+2. **Agent() × N** — spawns every agent as a teammate in parallel
+3. **Delegations** — creates per-agent delegations with exact IDs
+4. **Monitors** — watches findings appear in the filesystem
+5. **Consolidates** — security_architect merges all findings into `REPORTE.md`
+6. **Reviews** — auditor evaluates every submission with QPC scores
+
+### What you see
+
+Agents appear as colored messages in your terminal:
+
+- **Blue** — security_architect
+- **Green** — web_pentester
+- **Yellow** — api_pentester
+- **Purple** — auditor
+
+Each agent runs in its own tmux pane. You'll see `idle_notification` messages when they finish a turn, and `✢ Germinating...` spinners while they work.
+
+### 4. Review results
+
+After the auditor finishes QPC evaluations, check the mission directory:
+
+```
+missions/mi-pentest/
+  ├── mi-pentest.mission.yaml    # original manifest
+  ├── ORCHESTRATE.md             # orchestration plan
+  ├── PLAN_ATAQUE.md             # attack plan (security_architect)
+  ├── REPORTE.md                 # consolidated report
+  ├── findings-web/              # individual web findings
+  ├── findings-api/              # individual API findings
+  └── tokens.txt                 # session tokens (if captured)
+```
+
+### 5. Close the mission
+
+<Tabs>
+<TabItem label="If agents respond to shutdown">
+
+Send a `shutdown_request` to each agent, then `TeamDelete`. Claude Code handles this automatically when you ask.
+
+</TabItem>
+<TabItem label="If agents are zombies (tmux panes died)">
+
+```bash
+# Kill remaining tmux panes
+tmux kill-pane -t %10  # security_architect
+tmux kill-pane -t %11  # web_pentester
+tmux kill-pane -t %12  # api_pentester
+tmux kill-pane -t %13  # auditor
+
+# Clean up team directories
+rm -rf ~/.claude/teams/<team-name> ~/.claude/tasks/<team-name>
+```
+
+</TabItem>
+</Tabs>
+
+Then revoke all delegations:
+
+```bash
+colmena mission deactivate --id mi-pentest-2026
+```
+
+## The architecture at a glance
+
+```
+colmena mission spawn --auto-spawn
+  │
+  ├── 68 time-limited delegations (Bash, curl, Caido, WebFetch...)
+  ├── 4 agent prompts with mission markers
+  └── ORCHESTRATE.md
+       │
+       └── Claude Code (team-lead) reads it
+            │
+            ├── TeamCreate("mi-pentest")
+            ├── Agent(security_architect) → tmux pane
+            ├── Agent(web_pentester)      → tmux pane
+            ├── Agent(api_pentester)      → tmux pane
+            └── Agent(auditor)            → tmux pane
+                 │
+                 ├── Workers execute in parallel
+                 ├── Findings → filesystem
+                 ├── review_submit (per-agent)
+                 └── review_evaluate (auditor → ELO scores)
+```
+
+## Troubleshooting
+
+**"enforce_missions: false is explicit"**
+
+Your trust firewall has `enforce_missions: false`. Either:
+- Set it to `true` in `~/.colmena/config/trust-firewall.yaml`, or
+- Add `--session-gate` to the spawn command
+
+**Agents don't show in the UI**
+
+Make sure `colmena setup` ran successfully. The MCP server must be registered in `~/.mcp.json`.
+
+**Agents stay after shutdown**
+
+Known issue: if a tmux pane dies before the agent processes the `shutdown_response`, the agent stays `isActive: true` in the team roster. Kill the panes manually and delete the team directory. The session UI clears on next restart.
+
+## Next steps
+
+- [Manifest Schema](/reference/manifest-schema) — full YAML reference
+- [Trust Firewall](/concepts/trust-firewall) — understand the rule system
+- [Missions & Delegations](/concepts/missions) — mission lifecycle
+- [ELO & Accountability](/concepts/elo) — how trust is earned
