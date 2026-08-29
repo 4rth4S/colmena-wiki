@@ -17,6 +17,12 @@ export default defineConfig({
       customCss: ['/src/styles/custom.css'],
       sidebar: [
         {
+          label: 'Guide',
+          items: [
+            { label: 'From Zero to Hero', slug: 'guide/colmena-from-zero-to-hero' },
+          ],
+        },
+        {
           label: 'Quickstart',
           items: [
             { label: 'Getting Started', slug: 'quickstart/getting-started' },
