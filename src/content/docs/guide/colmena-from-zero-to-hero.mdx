@@ -1,0 +1,440 @@
+---
+title: Colmena from Zero to Hero
+description: A digested, narrative guide to Colmena — the trust bridge between human operators and agentic infrastructure, not just a firewall for agents.
+---
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+> **Audience:** this section is the *digest* — read it in 15 minutes and you'll
+> know what Colmena does, why each piece exists, and how they fit together.
+> Then you walk into the denser sections (Core Concepts, Architecture,
+> Reference) with the map already built.
+
+---
+
+## 1. The thesis: Colmena is a bridge, not a firewall
+
+Colmena is a **trust bridge** between two sides that speak different languages:
+a human operator who needs control and forensics, and an agent that needs
+operational autonomy. **Auditability is the artifact that unites them** — not a
+feature, the core.
+
+| | Human side (operator) | Agentic side (LLM) |
+|---|---|---|
+| **What Colmena gives it** | Forensic artifact + control surface | Orchestration harness |
+| **What for** | Explicit rules that aren't bypassed + delegate autonomy by role | Operate within scope with autonomy + build roles when there's no recipe + feed back to the operator |
+| **The leg** | CLI (`colmena-cli`) | MCP (`colmena-mcp`) |
+| **The shared core** | `colmena-core` — auditability is the bridge | `colmena-core` |
+
+<CardGrid>
+  <Card title="🧑‍💻 The operator" text="Forensics and control. Every tool call goes through a deterministic precedence, no exceptions. Delegations are temporary, TTL-scoped, revocable. The paper trail is the point." />
+  <Card title="🤖 The agentic infrastructure" text="Multi-agent orchestration within the granted scope. If no existing role fits, a new one is built for the mission. The system can feed back to the operator." />
+</CardGrid>
+
+**Why put determinism in the hot path:** an agent can miss a problem a human
+sees — missing context, poisoned context, hallucinating a permission it
+doesn't have, edge-cases the model didn't weigh. Determinism isn't there to
+*slow down* the agent — it's there so the human has forensics and control, and
+the LLM has a governable frame to operate in with autonomy. Without
+determinism, there's no bridge — there's a loose agent and a blind operator.
+
+> **V8:** `colmena-cli` (binary `colmena`, 12 subcommand groups including
+> `mission`, `delegate`, `calibrate`, `review`, `elo`, `alerts`) serves the
+> operator side. `colmena-mcp` (binary `colmena-mcp`, 31 MCP tools including
+> `review_submit`, `library_select`, `mission_spawn`, `evaluate`,
+> `review_evaluate`) serves the LLM side. Both call the same
+> `colmena_core::firewall::evaluate_with_elo` and both write/read the audit log
+> in `colmena-core::audit`. The audit log is the shared structure.
+
+---
+
+## 2. The mental map (8 pieces, 30 seconds)
+
+Before going into any of them, the full map. Eight links that chain into a
+single arc: **autonomy is earned with evidence, under a transparent
+firewall.**
+
+```
+                         ┌──────────────────────────┐
+                         │ 1. Trust Firewall         │
+                         │ the deterministic gate     │
+                         └──────────┬───────────────┘
+                                    │
+                   ┌────────────────▼──────────────────┐
+                   │ 2. Delegations                    │
+                   │ TTL-memoryed autonomy              │
+                   └────────────────┬──────────────────┘
+                                    │
+                   ┌────────────────▼──────────────────┐
+                   │ 3. ELO & Calibration ◄────────┐    │
+                   │ persistent trust               │   │
+                   └────────────────┬──────────────────┘ │
+                                    │                    │
+                   ┌────────────────▼──────────────────┐ │
+                   │ 4. Missions + Manifest             │ │
+                   │ the scoped vehicle                 │ │
+                   └────────────────┬──────────────────┘ │
+                                    │                    │
+                   ┌────────────────▼──────────────────┐ │
+                   │ 5. Wisdom Library                  │ │
+                   │ reusable roles + patterns          │ │
+                   └────────────────┬──────────────────┘ │
+                                    │                    │
+                   ┌────────────────▼──────────────────┐ │
+                   │ 6. Review / Auditor ──────────────┼─┘
+                   │ quality that feeds back            │
+                   └────────────────┬──────────────────┘
+                                    │
+                   ┌────────────────▼──────────────────┐
+                   │ 7. Findings + Alerts               │
+                   │ operational artifacts              │
+                   └────────────────┬──────────────────┘
+                                    │
+               ┌────────────────────▼────────────────────┐
+               │ 8. Output Filter                         │
+               │ the output skin                          │
+               └────────────────────┬────────────────────┘
+                                    │
+                                    └──► back to 7
+```
+
+**Reading the cycle:**
+
+1. **Trust Firewall** — the gate. Every tool call goes through a deterministic
+   precedence. Exact order (`firewall.rs`):
+   `blocked → delegations → agent_overrides (YAML > manifest > ELO) →
+   restricted → trust_circle → defaults`. There are non-obvious extra steps:
+   chain-aware Bash evaluator, shell chain guard, and a mission revocation kill
+   switch (if the agent's mission was deactivated, everything is blocked).
+2. **Delegations** — the escape with memory. Temporary, TTL-scoped autonomy
+   without touching the static policy. Avoids prompting for every write.
+   Revocable with `mission deactivate`. TTL max 24h, default 4h, mandatory.
+3. **ELO & Calibration** — the memory. Reviews → scores → ELO deltas →
+   tiers (Elevated/Standard/Restricted/Probation) → `agent_overrides` that
+   feed the firewall's step 3. Trust is earned with evidence and decays if not
+   sustained (temporal decay, with passive anti-rehabilitation).
+4. **Missions + Manifest** — the vehicle. From backlog item → scoped run with
+   a `CLAUDE.md` per agent, delegations attached, deactivate as revocation.
+5. **Wisdom Library** — the recipe. Encodes *how* work is done (roles with
+   `tools_allowed`, `bash_patterns`, `path_within`; patterns with topology).
+6. **Review / Auditor** — the quality output. `review_submit` → auditor →
+   scores → feeds back the ELO. The auditor also gains/loses ELO based on the
+   quality of its findings.
+7. **Findings + Alerts** — the operational artifacts. What comes out of the
+   system and returns to the operator (and to the firewall, closing the cycle).
+8. **Output Filter** — the output skin. The `colmena-filter` pipeline runs in
+   the `PostToolUse` hook: strips ANSI, dedup, scans for prompt injection in
+   the agent's output, truncates. It's not the firewall — it's the filter for
+   what the agent *returns*. Measures tokens saved (session stats).
+
+> **V7:** the `colmena-filter` crate is **not** the "firewall engine" as the
+> name might suggest. The trust firewall lives in
+> `colmena-core/src/firewall.rs` (2224 lines). `colmena-filter` is the
+> *output filter* that runs in `PostToolUse` (ANSI/dedup/prompt-injection/
+> truncate). Both are real and connected, but they do different things: filter
+> = output skin, firewall = input gate.
+
+---
+
+## 3. The problem we inherited (why each piece exists)
+
+Each piece of Colmena is the answer to a concrete problem that any technical
+human has already lived through operating agents. They aren't features looking
+for a problem — they're mechanisms that emerged from using the tool and
+stumbling on what was missing.
+
+### The agent hallucinates permissions it doesn't have
+
+An LLM, with partial context, can *decide* it makes sense to write to
+production, merge a PR, or send a message to a person — and execute it if
+nothing stops it. The model isn't lying: it reasons with what it has, and
+sometimes it's missing the data point "this isn't yours to do."
+
+→ **Trust Firewall.** Determinism in the hot path: every tool call goes through
+the precedence, no exceptions, no model bypass. The `PreToolUse` hook calls
+`evaluate_with_elo`, which returns `Action::{AutoApprove, Ask, Block}`. `Block`
+maps to `HookResponse::deny` (the tool call is rejected). `Block` is the only
+action that is never overridden — not by delegations, not by ELO, not by
+overrides. The firewall is the **input skin** of the system.
+
+### Prompting for every write is exhausting and doesn't scale
+
+If every `Bash`, every `Write`, every `Edit` asks for approval, the experience
+becomes "y-spam": answering *y* to everything to move forward. That's friction,
+and the agent loses its value of autonomy.
+
+→ **Delegations.** Temporary, TTL-scoped, session-scoped, revocable autonomy.
+You give the agent permission to operate in a specific field for a bounded time
+(max 24h, default 4h, TTL mandatory — a delegation without `expires_at` is
+rejected), without touching the static policy. The operator delegates, the
+agent executes, and everything is audited. `mission deactivate` revokes all of
+the mission's delegations at once and cleans up the auto-generated subagents.
+
+### You don't know if the agent got better or worse over time
+
+An agent that did a good mission isn't a reliable agent forever. And one that
+failed isn't one to discard. Without performance memory, every mission starts
+from zero and there's no way to calibrate trust.
+
+→ **ELO & Calibration.** Each review generates scores. Those scores feed an
+ELO rating **per role** (the ELO bucket is the `author_role`, not an ephemeral
+agent_id). Over time, roles fall into tiers: Elevated (auto-approve its
+tools), Standard, Restricted (ask for everything), Probation (block dangerous
+tools). Trust is earned with evidence and decays if not sustained. The ELO
+closes the cycle — `calibrate()` generates `agent_overrides` that the firewall
+applies in step 3: a role with low ELO gets less autonomy.
+
+### You don't know where to start a task
+
+"Triaging this report" or "modeling threats for this REQ" are tasks that
+require context, steps, and roles. Starting from scratch every time is costly,
+and quality depends on how much context you load into the agent's prompt.
+
+→ **Missions + Library.** The backlog item becomes a scoped run: `mission
+spawn` maps roles from the library, generates a `CLAUDE.md` per agent with the
+mission's scope, attaches the corresponding delegations. The library encodes
+*how* work is done: roles with `tools_allowed`, `bash_patterns`, `path_within`;
+patterns with topology. You reuse before reinventing. And if no role fits,
+`library create-role` builds a new one.
+
+### You don't know if the agent's output is good
+
+An agent finishes a mission and hands you a finding, a report, a diff. Is it
+good? Without structured review, it depends on the operator's eye — and the
+operator doesn't always have time.
+
+→ **Review / Auditor.** `review_submit` sends the artifact to an auditor. The
+auditor scores by dimension, generates findings with severity, and that feeds
+back the ELO of the author *and* the auditor (the auditor gains ELO for each
+finding it makes; loses if its findings are dismissed). Quality is in the
+cycle. And the auditor calibrates itself — `calibrate auditor` lets the human
+operator give feedback on the auditor's evaluations, adjusting its ELO.
+
+### The agent's output can be poisoned
+
+The agent reads tool output (a `curl`, a `cat`, a log) and that output can
+contain malicious instructions — prompt injection hidden in a response. If
+the agent acts on it, the model isn't lying: it reads input that looks
+legitimate.
+
+→ **Output Filter.** The `colmena-filter` pipeline runs in `PostToolUse`:
+strips ANSI, dedup, **scans for prompt injection** in the tool's output, and
+truncates. If it detects suspicious patterns, it flags them. It's the **output
+skin** — what the agent *gets back* from its tools also passes through the
+firewall, not just what it *sends*.
+
+---
+
+## 4. A mission, start to finish (the narrative thread)
+
+So the mechanisms aren't abstract, we narrate a real mission start to finish.
+Every time a piece fires, we flag it.
+
+### Mission 1 (simple): Threat Modeling over a codebase/RFC
+
+**The request.** A new REQ comes in (e.g. "implement a new auth mechanism"). A
+threat model of the codebase/RFC is needed before it hits prod.
+
+**`mission_spawn`** — the operator (from CLI or via the LLM from MCP) spawns
+the mission. Colmena maps the appropriate pattern from the library, selects
+the appropriate role, generates a `CLAUDE.md` per agent with the mission's
+scope, and returns the delegation commands for the operator to approve.
+*(Mechanisms: **Missions + Library**, **Delegations** — appearance 1.)*
+
+**The agent works.** It reads the RFC, reads the codebase, builds the threat
+model. It wants to write findings to a file — the `PreToolUse` hook
+intercepts, runs the firewall's precedence: is there a `blocked`? No. Is there
+an active delegation for `Write` in this scope? Yes, TTL valid. Pass. The agent
+writes, and the paper trail lands in the audit log. *(Mechanisms: **Trust
+Firewall**, **Delegations** — appearance 2.)*
+
+**`review_submit`** — the agent finishes and sends the TM to the auditor. The
+auditor evaluates: scores by dimension, findings with severity. *(Mechanisms:
+**Review/Auditor** — appearance 1.)*
+
+**ELO** — the scores feed the role's rating. If it did well, the role elevates;
+if poorly, restrict or probation. The next mission using that role starts with
+the trust earned (or lost). And those tiers materialize as `agent_overrides`
+that the firewall applies next time. *(Mechanisms: **ELO** — appearance 1,
+cycle closure.)*
+
+**Closure.** `mission deactivate` revokes the mission's delegations.
+Everything is audited: every tool call, every review, every ELO change.
+*(Mechanisms: **Findings + Alerts** — the paper trail is the forensic
+artifact.)*
+
+### Mission 2 (advanced): Mobile pentest with multiple agents
+
+**The request.** Pentest of an APK on a rooted physical device (a Moto G84
+with Magisk, bootloader unlocked). Multiple fronts: TLS traffic interception
+via Caido proxy with the CA in the system trust store, RASP/anti-root
+analysis (jail-monkey), Frida hooks, and cert pinning bypass with Xposed
+modules (TrustMeAlready on a Vector framework).
+
+**`mission_spawn` with a multi-agent pattern.** The library suggests a
+multi-agent pattern: a coordinator + several workers, each with its role and
+scope. Multiple `CLAUDE.md`s are generated. The traffic worker has a delegation
+for `Bash` (`adb`, `curl` to the LAN proxy) + `Write` in an evidence dir; the
+Frida worker has a delegation for `Bash` with `bash_patterns` matching
+`frida-*`/`adb shell`; the analysis worker has only `Read` + `WebFetch`.
+*(Mechanisms: **Missions + Library** + **Delegations** — now with per-agent
+scope, and the role's `bash_patterns` bounding which shell commands are
+legitimate.)*
+
+**Workers in parallel.** Each worker operates within its delegation scope. The
+firewall is per-agent: the Frida worker can run `frida` via `Bash`, the
+analysis worker cannot. The precedence is evaluated by `agent_id` and
+`agent_type` — the firewall iterates both fields, the first one to match a
+rule wins. *(Mechanisms: **Trust Firewall** with per-agent agent_overrides.)*
+
+**The coordinator feeds back.** Workers send findings to the coordinator,
+which assembles the report. If a worker discovers a bypass (e.g. RASP in
+`report_only` mode due to a Firebase Remote Config gate), the coordinator can
+ask the operator for an expanded delegation to go deeper. *(Mechanisms:
+**Delegations** dynamic, **Findings + Alerts** returning to the operator.)*
+
+**Review + ELO per agent.** Each worker is reviewed separately. The
+coordinator too. ELOs are calibrated per role, not globally. A worker can
+enter probation while the coordinator elevates. *(Mechanisms: **ELO per-role**,
+**Review/Auditor** multi-agent.)*
+
+> **V5:** the firewall supports `agent_id` and `agent_type` in the precedence.
+> In `firewall.rs:139` it iterates `[payload.agent_id, payload.agent_type]`
+> and the first one to match a rule wins. Delegations also match by both
+> fields. **V4:** the ELO is per-role (the `agent` field in `EloEvent` is set
+> with `author_role`, bucketed via `elo_bucket_for`), not a global number.
+
+---
+
+## 5. The two legs: MCP vs CLI (why the same tool has two interfaces)
+
+Here the opening thesis closes. Colmena has **two legs** — MCP and CLI — and
+although both can be used by the LLM, they serve different objectives
+depending on the end user.
+
+### CLI (`colmena-cli`) — the operator's leg
+
+The operator uses the CLI for **control and forensics**:
+
+- `mission spawn`, `mission deactivate`, `mission abort` — create and revoke missions.
+- `delegate add`, `delegate revoke` — grant and revoke temporary autonomy.
+- `calibrate`, `elo show`, `calibrate auditor` — view and adjust earned
+  trust.
+- `review list`, `review show`, `findings`, `alerts` — the forensic paper trail.
+- `config check`, `mission status`, `doctor` — system state.
+
+The operator doesn't enter the agent's loop — they enter the governance
+system. The CLI is the control surface on the human side.
+
+### MCP (`colmena-mcp`) — the LLM's leg
+
+The agent uses the MCP tools to **orchestrate within scope**:
+
+- `library_select`, `library_generate`, `mission_spawn` — pick the recipe and
+  start the run.
+- `review_submit`, `review_evaluate` — submit and evaluate artifacts.
+- `evaluate` — evaluate a tool call against the firewall (self-check before
+  executing).
+- `mission_status`, `delegate_list` — know its own scope.
+- `findings_query`, `findings_list` — access the paper trail (shared memory
+  with the operator).
+
+The agent operates within the bridge — it doesn't cross it, it inhabits it.
+The MCP is the orchestration harness on the agentic side.
+
+### The shared core: `colmena-core`
+
+Both legs call the same core. The audit trail generated by the firewall is
+what the operator queries via CLI and what the agent queries via MCP. The
+audit log is the material bridge — the artifact both sides read and both
+contribute to. Without auditability, there's no bridge — there are two blind
+sides.
+
+> **V6:** `colmena-cli` and `colmena-mcp` both declare
+> `colmena-core = { path = "../colmena-core" }` in their `Cargo.toml`. The
+> audit log (`colmena-core/src/audit.rs`) is append-only, written by the CLI
+> hook on every `Decision`, and read by both legs. `colmena-core` is the only
+> crate the others depend on — it's the shared core.
+
+---
+
+## 6. Going deeper (what to read next)
+
+"Zero to Hero" ends here. What follows is the manual — the five existing
+sections of this wiki, denser, for when you want to implement or contribute:
+
+<CardGrid>
+  <Card title="Quickstart" text="Installation, first mission, install mode B. For when you want to run Colmena, not just understand it." href="/quickstart/getting-started/" />
+  <Card title="Core Concepts" text="Scoped autonomy, trust firewall, missions & delegations, ELO. The detail of each piece of the mental map." href="/concepts/scoped-autonomy/" />
+  <Card title="Use Cases" text="Pentest, code review, incident response, docs generation, refactor, custom pattern. Applied recipes." href="/use-cases/pentest/" />
+  <Card title="Reference" text="Manifest schema, CLI commands, MCP tools, role YAML, firewall config. The specification." href="/reference/manifest-schema/" />
+  <Card title="Architecture" text="System overview, hook pipeline, mission lifecycle. How it's built inside." href="/architecture/overview/" />
+  <Card title="Community" text="Contributing, roadmap, security. For when you want to contribute to the OSS." href="/community/contributing/" />
+</CardGrid>
+
+---
+
+## Appendix: Docs ↔ code verification (second pass, completed)
+
+> This section documents the audit done against the public repo
+> `github.com/4rth4S/colmena` @ `main`. All verified claims are grounded in
+> the OSS code.
+
+### Completed verifications
+
+- [x] **V1 — Firewall precedence order.** In
+  `colmena-core/src/firewall.rs:54-237` (`evaluate_with_elo`). The order is
+  literal: `blocked → delegations → agent_overrides (YAML > manifest > ELO) →
+  restricted → trust_circle → defaults`. Minor divergence: agent_overrides YAML
+  and ELO are the **same step 3** (subdivided into 3a YAML, 3a2 manifest, 3b ELO),
+  not two separate steps. Extra steps not documented in the original docs:
+  4.5 chain-aware Bash evaluator, 4.6 shell chain guard, 4.8 mission
+  revocation kill switch.
+- [x] **V2 — Firewall is deterministic, not advisory.** In
+  `colmena-cli/src/main.rs:869-962`. `evaluate_with_elo` returns
+  `Action::{AutoApprove, Ask, Block}` → maps to `HookResponse::{allow, ask,
+  deny}`. `Block` = real `deny` (the tool call is rejected). `Block` is never
+  overridden — it's the first step, non-overridable.
+- [x] **V3 — Delegations: TTL + revocation.** In
+  `colmena-core/src/delegate.rs:10` (`MAX_TTL_HOURS=24`), `:13`
+  (`DEFAULT_TTL_HOURS=4`), `:80` (TTL mandatory, Fix #8). `run_mission_deactivate`
+  in `main.rs:2627` → `revoke_by_mission` + audit log + cleanup of auto-generated
+  `.md` files.
+- [x] **V4 — ELO per-role and cycle closure.** The `agent` field
+  in `EloEvent` (`elo.rs:20`) is set with `author_role` (not ephemeral agent_id),
+  bucketed via `elo_bucket_for` (`review.rs:16`). `review_evaluate` MCP
+  (`main.rs:1188-1235`) → `author_delta`/`finding_delta` → `log_elo_event` →
+  `calibrate()` (`calibrate.rs:154`) generates `agent_overrides` per tier →
+  persists to `elo-overrides.json` → `load_overrides` (`calibrate.rs:444`) in
+  the hook → firewall step 3b applies the overrides. ELO affects precedence.
+  Tiers: Elevated (≥1600), Standard (≥1300), Restricted (≥1100),
+  Probation (below 1100). Temporal decay + passive anti-rehabilitation (`elo.rs:231`).
+- [x] **V5 — agent_id / agent_type in the firewall.** In
+  `firewall.rs:139`: iterates `[payload.agent_id, payload.agent_type]`, the first
+  to match wins. Delegations also match by both (`firewall.rs:254`).
+  Mission revocation kill switch also checks both (`firewall.rs:206`).
+- [x] **V6 — colmena-core as shared core.** In the 4
+  `Cargo.toml`s: `colmena-cli` and `colmena-mcp` declare `colmena-core = { path =
+  "../colmena-core" }`. `colmena-filter` does NOT depend on core (it's standalone
+  for output filtering). Audit log in `colmena-core/src/audit.rs` is append-only,
+  written by the CLI hook, read by both legs.
+- [x] **V7 — colmena-filter vs colmena-core (DIVERGENCE).** `colmena-filter`
+  is NOT the firewall engine. It's the **output filter pipeline** (ANSI/dedup/
+  prompt-injection/truncate) that runs in `PostToolUse` (`pipeline.rs`,
+  `main.rs:1088`). The actual trust firewall lives in
+  `colmena-core/src/firewall.rs` (2224 LOC). `colmena-filter` is a real and
+  connected crate, but it does output filtering, not firewalling. Corrected in
+  the body of the guide (piece 8 of the mental map).
+- [x] **V8 — CLI = operator, MCP = LLM.** CLI has 12 subcommand
+  groups (`Hook`, `Queue`, `Delegate`, `Config`, `Library`, `Review`, `Elo`,
+  `Alerts`, `Mission`, `Calibrate`, `Stats`, `Setup`, `Suggest`). MCP has 31
+  tools (all listed + `session_stats`, `calibrate_auditor_feedback`,
+  `mission_validate`, `library_create_role/pattern`, `mission_abort`).
+- [x] **V9 — "Cardboard" links.** One mislabeled link found: the
+  original .mdx called `colmena-filter` the "firewall engine" — it was cardboard
+  for that claim (it does something else). Corrected. All other links have
+  real wire-up: firewall→delegations (step 2), delegations→ELO (step 3b),
+  ELO→firewall (`calibrate`+`load_overrides`), missions→delegations
+  (`mission_spawn` generates delegations), library→missions (`mission_spawn` maps
+  roles), review→ELO (`review_evaluate` emits `EloEvent`), findings→alerts
+  (`alerts::create_alert`). One link not listed in the original map but real:
+  **Output Filter** (piece 8) — `colmena-filter` in `PostToolUse`.
